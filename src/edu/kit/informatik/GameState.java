@@ -8,11 +8,19 @@ public class GameState {
 
     public static void setWin() {
         isWon = true;
+        isRunning = false;
     }
 
     public static boolean getWinStatus() {
         return isWon;
     }
 
+    public static void setIsRunning(boolean status) {
+        isRunning = status;
+    }
+
+    public static boolean getIsRunning() {
+        return isRunning;
+    }
 
 }

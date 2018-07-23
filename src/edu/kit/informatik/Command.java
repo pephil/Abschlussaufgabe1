@@ -1,5 +1,7 @@
 package edu.kit.informatik;
 
+import sun.plugin2.message.Message;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.MatchResult;
@@ -10,12 +12,16 @@ public enum Command {
     THROWIN("throwin ([0,1,2,3,4,5,6,7])") {
         @Override
         public void execute(MatchResult matcher, int numberOfTokens) {
-            int columnNumber = Integer.parseInt(matcher.group(1));
-            Board.throwinBoard(getCurrentPlayer(), columnNumber);
-            playsCounter++;
-            GameMain.tokenThrowin();
-            Player.changePlayer();
-            MessageHandler.printOK();
+            if (GameState.getIsRunning()) {
+                int columnNumber = Integer.parseInt(matcher.group(1));
+                Board.throwinBoard(getCurrentPlayer(), columnNumber);
+                playsCounter++;
+                GameMain.tokenThrowin();
+                Player.changePlayer();
+                Evaluation.evaluateBoard(Board.getCurrentBoard());
+            } else {
+                MessageHandler.printGameOver();
+            }
         }
     },
 
@@ -23,9 +29,15 @@ public enum Command {
         @Override
         public void execute(MatchResult matcher, int numberOfTokens) {
             if (FlipMode.getStatus()) {
-                Board.flip();
-                Player.changePlayer();
-                MessageHandler.printOK();
+                if (GameState.getIsRunning()) {
+                    Board.flip();
+                    Player.changePlayer();
+                    MessageHandler.printOK();
+                } else {
+                    MessageHandler.printGameOver();
+                }
+            } else {
+                MessageHandler.printWrongModeFlip();
             }
         }
     },
@@ -34,14 +46,20 @@ public enum Command {
         @Override
         public void execute(MatchResult matcher, int numberOfTokens) {
             if (RemoveMode.getStatus()) {
-                int columnNumber = Integer.parseInt(matcher.group(1));
-                if (Board.getState(columnNumber, 7).equals(Player.getPlayerName())) {
-                    Board.removeLastElem(columnNumber);
-                    Player.changePlayer();
-                    MessageHandler.printOK();
+                if (GameState.getIsRunning()) {
+                    int columnNumber = Integer.parseInt(matcher.group(1));
+                    if (Board.getState(columnNumber, 7).equals(Player.getPlayerName())) {
+                        Board.removeLastElem(columnNumber);
+                        Player.changePlayer();
+                        MessageHandler.printOK();
+                    } else {
+                        MessageHandler.printRemoveError();
+                    }
                 } else {
-                    MessageHandler.printRemoveError();
+                    MessageHandler.printGameOver();
                 }
+            } else {
+                MessageHandler.printWrongModeRemove();
             }
         }
     },
@@ -95,12 +113,15 @@ public enum Command {
                 switch (args[0]) {
                     case "standard":
                         RegularMode.setStatus(true);
+                        GameState.setIsRunning(true);
                         break;
                     case "remove":
                         RemoveMode.setStatus(true);
+                        GameState.setIsRunning(true);
                         break;
                     case "flip":
                         FlipMode.setStatus(true);
+                        GameState.setIsRunning(true);
                         break;
                         default:
                             break;

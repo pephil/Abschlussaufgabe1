@@ -23,4 +23,19 @@ public class MessageHandler {
         Terminal.printError("remove not possible (not your token)");
     }
 
+    public static void printWinner(String player) {
+        Terminal.printLine(player + " wins");
+    }
+
+    public static void printGameOver() {
+        Terminal.printError("game is already over!");
+    }
+
+    public static void printWrongModeFlip() {
+        Terminal.printError("flip command not allowed in current mode");
+    }
+
+    public static void printWrongModeRemove() {
+        Terminal.printError("remove command not allowed in current mode");
+    }
 }

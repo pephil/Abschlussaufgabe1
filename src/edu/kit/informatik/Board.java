@@ -65,4 +65,8 @@ public class Board {
         Collections.reverse(list);
         return list.toArray();
     }
+
+    public static String[][] getCurrentBoard() {
+        return currentBoard;
+    }
 }
