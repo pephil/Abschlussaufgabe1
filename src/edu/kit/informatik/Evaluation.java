@@ -3,13 +3,13 @@ package edu.kit.informatik;
 public class Evaluation {
 
     public static void evaluateBoard(String[][] currentBoard) {
-        //vertical wieder einfügen
-        if (evaluateVertical(currentBoard) && !evaluateHorizontal(currentBoard)) {
+        //vertical horizontal wieder einfügen
+        if (!evaluateDiagonal1(currentBoard)) {
             MessageHandler.printOK();
         } else {
             GameState.setWin();
         }
-        //evaluateDiagonal(currentBoard);
+        //evaluateDiagonal1(currentBoard);
     }
 
     private static boolean evaluateHorizontal(String[][] currentBoard) {
@@ -62,8 +62,30 @@ public class Evaluation {
         return false;
     }
 
-    private static boolean evaluateDiagonal(String[][] currentBoard) {
-        return true;
+    private static boolean evaluateDiagonal1(String[][] currentBoard) {
+
+        int p1 = 0;
+        int p2 = 0;
+
+        for (int i = 7; i > 2; i--) {
+            for (int j = 0; j < 5; j++) {
+                if (currentBoard[j][i] != null && currentBoard[j][i].equals("P1")) {
+                    p1++;
+                    p2 = 0;
+                    for (int k = 0; k < 4; k++) {
+                        if (currentBoard[j + k][i - k] != null && currentBoard[j + k][i - k].equals("P1")) {
+                            p1++;
+                            p2 = 0;
+                        }
+                    }
+                    if (p1 == 4) {
+                        MessageHandler.printWinner("P1");
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
 }
