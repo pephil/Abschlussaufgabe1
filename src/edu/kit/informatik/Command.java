@@ -130,11 +130,8 @@ public enum Command {
             } else {
                throw new InputException("wrong type of Input (must be: standard/flip/remove + 28-32)");
             }
-
-
         }
         throw new InputException("only two arguments allowed (Gamemode and amount of Playertokens)");
-
     }
 
     public static Command executeMatching(String input, int numberOfTokens) throws InputException {
@@ -147,7 +144,6 @@ public enum Command {
             }
         }
         throw new InputException("not a valid command");
-
     }
 
     public abstract void execute(MatchResult matcher, int numberOfTokens);

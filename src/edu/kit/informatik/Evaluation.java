@@ -39,9 +39,13 @@ public class Evaluation {
 
     private static boolean evaluateVertical(String[][] currentBoard) {
 
+        boolean p1Win = false;
+        boolean p2Win = false;
+
         for (int i = 0; i < 8; i++) {
             int p1 = 0;
             int p2 = 0;
+
             for (int j = 0; j < 8; j++) {
                 if (currentBoard[i][j] != null && currentBoard[i][j].equals("P1")) {
                     p1++;
@@ -51,13 +55,18 @@ public class Evaluation {
                     p1 = 0;
                 }
                 if (p1 == 4) {
-                    MessageHandler.printWinner("P1");
-                    return true;
+                    p1Win = true;
                 } else if (p2 == 4) {
-                    MessageHandler.printWinner("P2");
-                    return true;
+                    p2Win = true;
                 }
             }
+        }
+        if (p2Win) {
+            MessageHandler.printWinner("P2");
+            return true;
+        } else if (p1Win) {
+            MessageHandler.printWinner("P2");
+            return true;
         }
         return false;
     }
