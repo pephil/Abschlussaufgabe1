@@ -42,4 +42,8 @@ public class MessageHandler {
     public static void printDraw() {
         Terminal.printLine("draw");
     }
+
+    public static void printLine(String line) {
+        Terminal.printLine(line + "\t");
+    }
 }

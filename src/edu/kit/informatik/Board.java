@@ -29,7 +29,7 @@ public class Board {
             String line = "";
             for (int j = 0; j < 8; j++) {
                 line += getState(j, i) + " ";
-            } System.out.println(line + "\t");
+            } MessageHandler.printLine(line);
         }
     }
 
