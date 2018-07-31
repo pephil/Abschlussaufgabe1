@@ -1,9 +1,5 @@
 package edu.kit.informatik;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 public class Board {
 
     private static String[][] currentBoard = new String[8][8];
@@ -45,21 +41,6 @@ public class Board {
         }
     }
 
-//    public static void flip() {
-//        int counter;
-//        for (int i = 0; i < 8; i++) {
-//            for (int j = 0; j < 8; j++) {
-//                if (currentBoard[i][j] != null) {
-//                    counter = j;
-//                    for (int k = counter; k < 8; k++) {
-//
-//                    }
-//                }
-//
-//            }
-//        }
-//    }
-
     public static void flip() {
         // Get rows from board
         String[][] unflippedBoard = currentBoard;
@@ -77,7 +58,7 @@ public class Board {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (unflippedBoard[i][j] != null) {
-                    throwinBoard(unflippedBoard[i][j],i);
+                    throwinBoard(unflippedBoard[i][j], i);
                 }
             }
         }

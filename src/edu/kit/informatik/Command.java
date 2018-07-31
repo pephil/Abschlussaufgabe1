@@ -1,7 +1,5 @@
 package edu.kit.informatik;
 
-import sun.plugin2.message.Message;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.MatchResult;
@@ -94,7 +92,7 @@ public enum Command {
         }
     };
 
-    private static final int numberOfArguments = 2;
+    private static final int amountArguments = 2;
     private static int playsCounter;
     private static boolean isRunning = true;
     private static Player currentPlayer;
@@ -106,7 +104,7 @@ public enum Command {
 
     public static boolean checkInput(String[] args) throws InputException {
 
-        if (args.length == numberOfArguments) {
+        if (args.length == amountArguments) {
             if (args[0].matches("standard") && args[1].matches("^(28|29|30|31|32)")
                     || args[0].matches("flip") && args[1].matches("^(28|29|30|31|32)")
                     || args[0].matches("remove") && args[1].matches("^(28|29|30|31|32)")) {
@@ -123,12 +121,12 @@ public enum Command {
                         FlipMode.setStatus(true);
                         GameState.setIsRunning(true);
                         break;
-                        default:
-                            break;
+                    default:
+                        break;
                 }
                 return true;
             } else {
-               throw new InputException("wrong type of Input (must be: standard/flip/remove + 28-32)");
+                throw new InputException("wrong type of Input (must be: standard/flip/remove + 28-32)");
             }
         }
         throw new InputException("only two arguments allowed (Gamemode and amount of Playertokens)");
