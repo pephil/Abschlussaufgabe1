@@ -38,4 +38,8 @@ public class MessageHandler {
     public static void printWrongModeRemove() {
         Terminal.printError("remove command not allowed in current mode");
     }
+
+    public static void printDraw() {
+        Terminal.printLine("draw");
+    }
 }

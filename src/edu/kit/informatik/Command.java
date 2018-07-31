@@ -14,7 +14,7 @@ public enum Command {
         public void execute(MatchResult matcher, int numberOfTokens) {
             if (GameState.getIsRunning()) {
                 int columnNumber = Integer.parseInt(matcher.group(1));
-                Board.throwinBoard(getCurrentPlayer(), columnNumber);
+                Board.throwinBoard(getCurrentPlayer().getPlayerName(), columnNumber);
                 playsCounter++;
                 GameMain.tokenThrowin();
                 Player.changePlayer();
@@ -32,7 +32,7 @@ public enum Command {
                 if (GameState.getIsRunning()) {
                     Board.flip();
                     Player.changePlayer();
-                    MessageHandler.printOK();
+                    Evaluation.evaluateBoard(Board.getCurrentBoard());
                 } else {
                     MessageHandler.printGameOver();
                 }
@@ -51,7 +51,7 @@ public enum Command {
                     if (Board.getState(columnNumber, 7).equals(Player.getPlayerName())) {
                         Board.removeLastElem(columnNumber);
                         Player.changePlayer();
-                        MessageHandler.printOK();
+                        Evaluation.evaluateBoard(Board.getCurrentBoard());
                     } else {
                         MessageHandler.printRemoveError();
                     }

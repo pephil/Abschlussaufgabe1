@@ -8,13 +8,13 @@ public class Board {
 
     private static String[][] currentBoard = new String[8][8];
 
-    public static void throwinBoard(Player currentplayer, int columnNumber) {
+    public static void throwinBoard(String currentPlayerName, int columnNumber) {
         for (int i = 0; i < 8; i++) {
             if (currentBoard[columnNumber][i] != null && i != 0) {
-                currentBoard[columnNumber][i - 1] = currentplayer.getPlayerName();
+                currentBoard[columnNumber][i - 1] = currentPlayerName;
                 return;
             } else if (currentBoard[columnNumber][7] == null) {
-                currentBoard[columnNumber][7] = currentplayer.getPlayerName();
+                currentBoard[columnNumber][7] = currentPlayerName;
                 return;
             }
         }
@@ -45,26 +45,44 @@ public class Board {
         }
     }
 
+//    public static void flip() {
+//        int counter;
+//        for (int i = 0; i < 8; i++) {
+//            for (int j = 0; j < 8; j++) {
+//                if (currentBoard[i][j] != null) {
+//                    counter = j;
+//                    for (int k = counter; k < 8; k++) {
+//
+//                    }
+//                }
+//
+//            }
+//        }
+//    }
+
     public static void flip() {
-        int counter;
+        // Get rows from board
+        String[][] unflippedBoard = currentBoard;
+        currentBoard = new String[][]{
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+
+        };
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (currentBoard[i][j] != null) {
-                    counter = j;
-                    for (int k = counter; k < 8; k++) {
-
-                    }
+                if (unflippedBoard[i][j] != null) {
+                    throwinBoard(unflippedBoard[i][j],i);
                 }
-
             }
         }
     }
 
-    public static Object[] reverse(Object[] arr) {
-        List<Object> list = Arrays.asList(arr);
-        Collections.reverse(list);
-        return list.toArray();
-    }
 
     public static String[][] getCurrentBoard() {
         return currentBoard;
