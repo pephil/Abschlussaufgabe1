@@ -1,12 +1,20 @@
 package edu.kit.informatik;
 
+/**
+ * @author Philipp Peiser.
+ * @version 02.08.2018., 1.1
+ */
 public class Evaluation {
 
     private static boolean p1Win = false;
     private static boolean p2Win = false;
 
-    public static boolean evaluateBoard(String[][] currentBoard) {
-
+    /**
+     * Evaluate method of the whole Board.
+     *
+     * @param currentBoard Two dimensional String array as the current board.
+     */
+    public static void evaluateBoard(String[][] currentBoard) {
 
         evaluateHorizontal(currentBoard);
         evaluateVertical(currentBoard);
@@ -16,22 +24,23 @@ public class Evaluation {
         if (p1Win && p2Win) {
             MessageHandler.printDraw();
             GameState.setWin();
-            return true;
         } else if (p2Win) {
             MessageHandler.printWinner("P2");
             GameState.setWin();
-            return true;
         } else if (p1Win) {
             MessageHandler.printWinner("P1");
             GameState.setWin();
-            return true;
         } else {
             MessageHandler.printOK();
-            return false;
         }
 
     }
 
+    /**
+     * Method to evaluate the horizontal/Line of the Board and checks for a winner.
+     *
+     * @param currentBoard Two dimensional String array as the current board.
+     */
     private static void evaluateHorizontal(String[][] currentBoard) {
 
         for (int i = 0; i < 8; i++) {
@@ -54,6 +63,11 @@ public class Evaluation {
         }
     }
 
+    /**
+     * Method to evaluate the vertical/column of the Board and checks for a winner.
+     *
+     * @param currentBoard Two dimensional String array as the current board.
+     */
     private static void evaluateVertical(String[][] currentBoard) {
 
         for (int i = 0; i < 8; i++) {
@@ -77,6 +91,11 @@ public class Evaluation {
         }
     }
 
+    /**
+     * Evaluates the board and checks the diagonal line of the board from bottom left to upper right for a winner.
+     *
+     * @param currentBoard Two dimensional String array as the current board.
+     */
     private static void evaluateDiagonalBottomLeft(String[][] currentBoard) {
 
         int p1 = 0;
@@ -117,7 +136,12 @@ public class Evaluation {
         }
     }
 
-    public static void evaluateDiagonalBottomRight(String[][] currentBoard) {
+    /**
+     * Evaluates the board and checks the diagonal line of the board from bottom right to upper left for a winner.
+     *
+     * @param currentBoard Two dimensional String array as the current board.
+     */
+    private static void evaluateDiagonalBottomRight(String[][] currentBoard) {
 
         int p1 = 0;
         int p2 = 0;
@@ -156,20 +180,4 @@ public class Evaluation {
             }
         }
     }
-
-    public static void main(String[] args) {
-        String[][] currentBoard = new String[][]{
-                {null, null, null, null, "P1", null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, "P1", null},
-                {null, null, null, null, null, null, null, "P1"},
-                {null, null, null, null, "P2", null, "P1", null},
-                {null, null, null, null, "P1", "P2", "P1", "P2"},
-                {null, null, null, "P1", "P1", "P1", "P2", "P2"},
-                {null, null, "P2", "P2", "P2", "P1", "P1", "P2"},
-
-        };
-        System.out.println(Evaluation.evaluateBoard(currentBoard));
-    }
-
 }

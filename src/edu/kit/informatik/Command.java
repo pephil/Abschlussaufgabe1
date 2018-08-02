@@ -7,6 +7,9 @@ import java.util.regex.MatchResult;
 public enum Command {
 
 
+    /**
+     * Throwin command to throwin a token into the board.
+     */
     THROWIN("throwin ([0,1,2,3,4,5,6,7])") {
         @Override
         public void execute(MatchResult matcher, int numberOfTokens) {
@@ -23,6 +26,9 @@ public enum Command {
         }
     },
 
+    /**
+     * Flip command to flip the board when the program is started in flip mode.
+     */
     FLIP("flip") {
         @Override
         public void execute(MatchResult matcher, int numberOfTokens) {
@@ -40,6 +46,9 @@ public enum Command {
         }
     },
 
+    /**
+     * Remove command to remove the token of the current player if the game is in remove mode.
+     */
     REMOVE("remove ([0,1,2,3,4,5,6,7])") {
         @Override
         public void execute(MatchResult matcher, int numberOfTokens) {
@@ -62,6 +71,9 @@ public enum Command {
         }
     },
 
+    /**
+     * Token command, shows how many tokens the current player has left.
+     */
     TOKEN("token") {
         @Override
         public void execute(MatchResult matcher, int numberOfTokens) {
@@ -69,6 +81,9 @@ public enum Command {
         }
     },
 
+    /**
+     * State commmand shows in which state the given position is (player 1 or 2 or empty).
+     */
     STATE("state ([0,1,2,3,4,5,6,7]);([0,1,2,3,4,5,6,7])") {
         @Override
         public void execute(MatchResult matcher, int numberOfTokens) {
@@ -78,13 +93,18 @@ public enum Command {
         }
     },
 
+    /**
+     * Print command prints the board.
+     */
     PRINT("print") {
         @Override
         public void execute(MatchResult matcher, int numberOfTokens) {
             Board.printBoard();
         }
     },
-
+    /**
+     * Quit command quits the current game session.
+     */
     QUIT("quit") {
         @Override
         public void execute(MatchResult matcher, int numberOfTokens) {
@@ -92,25 +112,34 @@ public enum Command {
         }
     };
 
-    private static final int amountArguments = 2;
+    private static final int NUMBER_OF_ARGUMENTS = 2;
     private static int playsCounter;
     private static boolean isRunning = true;
     private static Player currentPlayer;
     private Pattern pattern;
 
+    /**
+     * Constructor for a new command.
+     * @param pattern Regex pattern to validate and execute the command.
+     */
     Command(String pattern) {
         this.pattern = Pattern.compile(pattern);
     }
 
+    /**
+     *
+     * @param args is the String array given with the start of the program
+     * @return if returned true, the arguments are valid
+     * @throws InputException If the user didn't started the game with an argument in a valid form.
+     */
     public static boolean checkInput(String[] args) throws InputException {
 
-        if (args.length == amountArguments) {
+        if (args.length == NUMBER_OF_ARGUMENTS) {
             if (args[0].matches("standard") && args[1].matches("^(28|29|30|31|32)")
                     || args[0].matches("flip") && args[1].matches("^(28|29|30|31|32)")
                     || args[0].matches("remove") && args[1].matches("^(28|29|30|31|32)")) {
                 switch (args[0]) {
                     case "standard":
-                        RegularMode.setStatus(true);
                         GameState.setIsRunning(true);
                         break;
                     case "remove":
@@ -132,11 +161,18 @@ public enum Command {
         throw new InputException("only two arguments allowed (Gamemode and amount of Playertokens)");
     }
 
+    /**
+     * Matches input with existing commands and executes it when applicable.
+     *
+     * @param input This string is the users command written into the console.
+     * @param numberOfTokens The amount of tokens which the user started the game with.
+     * @return Returns the command the user entered.
+     * @throws InputException If the user didn't enter a command in a valid form.
+     */
     public static Command executeMatching(String input, int numberOfTokens) throws InputException {
         for (Command command : Command.values()) {
             Matcher matcher = command.pattern.matcher(input);
             if (matcher.matches()) {
-                currentPlayer = new Player(numberOfTokens);
                 command.execute(matcher, numberOfTokens);
                 return command;
             }
@@ -144,16 +180,38 @@ public enum Command {
         throw new InputException("not a valid command");
     }
 
+    /**
+     *
+     * Executes a command.
+     *
+     * @param matcher The Regex matcher.
+     * @param numberOfTokens Tokens both players have in the current state of the game.
+     */
     public abstract void execute(MatchResult matcher, int numberOfTokens);
 
+    /**
+     * Checks if the program is still running.
+     *
+     * @return boolean if the program is running.
+     */
     public boolean isRunning() {
         return isRunning;
     }
 
+    /**
+     * Getter method for the current Player.
+     *
+     * @return The current Player of the game.
+     */
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
+    /**
+     * Getter of the number of Plays in the game.
+     *
+     * @return The number of Plays in the current game.
+     */
     public static int getPlaysCounter() {
         return playsCounter;
     }
