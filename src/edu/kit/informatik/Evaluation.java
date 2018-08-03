@@ -8,13 +8,22 @@ public class Evaluation {
 
     private static boolean p1Win = false;
     private static boolean p2Win = false;
+    private static MessageHandler message = new MessageHandler();
+
+    /**
+     *
+     * @param currentBoard
+     */
+    public Evaluation(String[][] currentBoard) {
+        evaluateBoard(currentBoard);
+    }
 
     /**
      * Evaluate method of the whole Board.
      *
      * @param currentBoard Two dimensional String array as the current board.
      */
-    public static void evaluateBoard(String[][] currentBoard) {
+    public void evaluateBoard(String[][] currentBoard) {
 
         evaluateHorizontal(currentBoard);
         evaluateVertical(currentBoard);
@@ -22,16 +31,16 @@ public class Evaluation {
         evaluateDiagonalBottomLeft(currentBoard);
 
         if (p1Win && p2Win) {
-            MessageHandler.printDraw();
+            message.printDraw();
             GameState.setWin();
         } else if (p2Win) {
-            MessageHandler.printWinner("P2");
+            message.printWinner("P2");
             GameState.setWin();
         } else if (p1Win) {
-            MessageHandler.printWinner("P1");
+            message.printWinner("P1");
             GameState.setWin();
         } else {
-            MessageHandler.printOK();
+            message.printOK();
         }
 
     }
@@ -41,7 +50,7 @@ public class Evaluation {
      *
      * @param currentBoard Two dimensional String array as the current board.
      */
-    private static void evaluateHorizontal(String[][] currentBoard) {
+    private void evaluateHorizontal(String[][] currentBoard) {
 
         for (int i = 0; i < 8; i++) {
             int p1 = 0;
@@ -68,7 +77,7 @@ public class Evaluation {
      *
      * @param currentBoard Two dimensional String array as the current board.
      */
-    private static void evaluateVertical(String[][] currentBoard) {
+    private void evaluateVertical(String[][] currentBoard) {
 
         for (int i = 0; i < 8; i++) {
             int p1 = 0;
@@ -96,7 +105,7 @@ public class Evaluation {
      *
      * @param currentBoard Two dimensional String array as the current board.
      */
-    private static void evaluateDiagonalBottomLeft(String[][] currentBoard) {
+    private void evaluateDiagonalBottomLeft(String[][] currentBoard) {
 
         int p1 = 0;
         int p2 = 0;
@@ -141,7 +150,7 @@ public class Evaluation {
      *
      * @param currentBoard Two dimensional String array as the current board.
      */
-    private static void evaluateDiagonalBottomRight(String[][] currentBoard) {
+    private void evaluateDiagonalBottomRight(String[][] currentBoard) {
 
         int p1 = 0;
         int p2 = 0;

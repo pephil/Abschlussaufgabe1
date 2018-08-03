@@ -12,16 +12,16 @@ public enum Command {
      */
     THROWIN("throwin ([0,1,2,3,4,5,6,7])") {
         @Override
-        public void execute(MatchResult matcher, int numberOfTokens) {
+        public void execute(MatchResult matcher, int numberOfTokens, Board board) {
             if (GameState.getIsRunning()) {
                 int columnNumber = Integer.parseInt(matcher.group(1));
-                Board.throwinBoard(getCurrentPlayer().getPlayerName(), columnNumber);
+                board.throwinBoard(currentPlayer.getPlayerName(), columnNumber);
                 playsCounter++;
-                GameMain.tokenThrowin();
-                Player.changePlayer();
-                Evaluation.evaluateBoard(Board.getCurrentBoard());
+                currentPlayer.tokenThrowin();
+                currentPlayer.changePlayer();
+                board.evaluateBoard();
             } else {
-                MessageHandler.printGameOver();
+                message.printGameOver();
             }
         }
     },
@@ -31,17 +31,17 @@ public enum Command {
      */
     FLIP("flip") {
         @Override
-        public void execute(MatchResult matcher, int numberOfTokens) {
+        public void execute(MatchResult matcher, int numberOfTokens, Board board) {
             if (FlipMode.getStatus()) {
                 if (GameState.getIsRunning()) {
-                    Board.flip();
-                    Player.changePlayer();
-                    Evaluation.evaluateBoard(Board.getCurrentBoard());
+                    board.flip();
+                    currentPlayer.changePlayer();
+                    board.evaluateBoard();
                 } else {
-                    MessageHandler.printGameOver();
+                    message.printGameOver();
                 }
             } else {
-                MessageHandler.printWrongModeFlip();
+                message.printWrongModeFlip();
             }
         }
     },
@@ -51,22 +51,22 @@ public enum Command {
      */
     REMOVE("remove ([0,1,2,3,4,5,6,7])") {
         @Override
-        public void execute(MatchResult matcher, int numberOfTokens) {
+        public void execute(MatchResult matcher, int numberOfTokens, Board board) {
             if (RemoveMode.getStatus()) {
                 if (GameState.getIsRunning()) {
                     int columnNumber = Integer.parseInt(matcher.group(1));
-                    if (Board.getState(columnNumber, 7).equals(Player.getPlayerName())) {
-                        Board.removeLastElem(columnNumber);
-                        Player.changePlayer();
-                        Evaluation.evaluateBoard(Board.getCurrentBoard());
+                    if (board.getState(columnNumber, 7).equals(currentPlayer.getPlayerName())) {
+                        board.removeLastElem(columnNumber);
+                        currentPlayer.changePlayer();
+                        board.evaluateBoard();
                     } else {
-                        MessageHandler.printRemoveError();
+                        message.printRemoveError();
                     }
                 } else {
-                    MessageHandler.printGameOver();
+                    message.printGameOver();
                 }
             } else {
-                MessageHandler.printWrongModeRemove();
+                message.printWrongModeRemove();
             }
         }
     },
@@ -76,8 +76,8 @@ public enum Command {
      */
     TOKEN("token") {
         @Override
-        public void execute(MatchResult matcher, int numberOfTokens) {
-            MessageHandler.printToken();
+        public void execute(MatchResult matcher, int numberOfTokens, Board board) {
+            message.printToken();
         }
     },
 
@@ -86,10 +86,10 @@ public enum Command {
      */
     STATE("state ([0,1,2,3,4,5,6,7]);([0,1,2,3,4,5,6,7])") {
         @Override
-        public void execute(MatchResult matcher, int numberOfTokens) {
+        public void execute(MatchResult matcher, int numberOfTokens, Board board) {
             int columnNumberX = Integer.parseInt(matcher.group(1));
             int columnNumberY = Integer.parseInt(matcher.group(2));
-            MessageHandler.printState(columnNumberX, columnNumberY);
+            message.printState(columnNumberX, columnNumberY, board);
         }
     },
 
@@ -98,8 +98,8 @@ public enum Command {
      */
     PRINT("print") {
         @Override
-        public void execute(MatchResult matcher, int numberOfTokens) {
-            Board.printBoard();
+        public void execute(MatchResult matcher, int numberOfTokens, Board board) {
+            board.printBoard();
         }
     },
     /**
@@ -107,7 +107,7 @@ public enum Command {
      */
     QUIT("quit") {
         @Override
-        public void execute(MatchResult matcher, int numberOfTokens) {
+        public void execute(MatchResult matcher, int numberOfTokens, Board board) {
             isRunning = false;
         }
     };
@@ -115,7 +115,8 @@ public enum Command {
     private static final int NUMBER_OF_ARGUMENTS = 2;
     private static int playsCounter;
     private static boolean isRunning = true;
-    private static Player currentPlayer;
+    private static Player currentPlayer = new Player();
+    private static MessageHandler message = new MessageHandler();
     private Pattern pattern;
 
     /**
@@ -169,11 +170,11 @@ public enum Command {
      * @return Returns the command the user entered.
      * @throws InputException If the user didn't enter a command in a valid form.
      */
-    public static Command executeMatching(String input, int numberOfTokens) throws InputException {
+    public static Command executeMatching(String input, int numberOfTokens, Board board) throws InputException {
         for (Command command : Command.values()) {
             Matcher matcher = command.pattern.matcher(input);
             if (matcher.matches()) {
-                command.execute(matcher, numberOfTokens);
+                command.execute(matcher, numberOfTokens, board);
                 return command;
             }
         }
@@ -187,7 +188,7 @@ public enum Command {
      * @param matcher The Regex matcher.
      * @param numberOfTokens Tokens both players have in the current state of the game.
      */
-    public abstract void execute(MatchResult matcher, int numberOfTokens);
+    public abstract void execute(MatchResult matcher, int numberOfTokens, Board board);
 
     /**
      * Checks if the program is still running.
@@ -196,15 +197,6 @@ public enum Command {
      */
     public boolean isRunning() {
         return isRunning;
-    }
-
-    /**
-     * Getter method for the current Player.
-     *
-     * @return The current Player of the game.
-     */
-    public Player getCurrentPlayer() {
-        return currentPlayer;
     }
 
     /**

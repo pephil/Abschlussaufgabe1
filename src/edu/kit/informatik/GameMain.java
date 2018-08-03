@@ -7,6 +7,8 @@ package edu.kit.informatik;
  */
 public class GameMain {
     private static int amountOfTokens;
+    private static Board board = new Board();
+    private static MessageHandler message = new MessageHandler();
 
     /**
      * Main method of the program.
@@ -21,14 +23,14 @@ public class GameMain {
                 amountOfTokens = Integer.parseInt(args[1]);
                 do {
                     try {
-                        command = Command.executeMatching(Terminal.readLine(), amountOfTokens);
+                        command = Command.executeMatching(Terminal.readLine(), amountOfTokens, board);
                     } catch (InputException e) {
-                        MessageHandler.printError(e.getMessage());
+                        message.printError(e.getMessage());
                     }
                 } while (command == null || command.isRunning());
             }
         } catch (InputException e) {
-            MessageHandler.printError(e.getMessage());
+            message.printError(e.getMessage());
         }
     }
 
@@ -45,9 +47,7 @@ public class GameMain {
      * Method that counts down the amount of tokens after both players threw a token into the board.
      */
     public static void tokenThrowin() {
-        if (Command.getPlaysCounter() != 1 && Player.getPlayerName().equals("P1")) {
-            amountOfTokens--;
-        }
+        amountOfTokens--;
 
     }
 }

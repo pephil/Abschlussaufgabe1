@@ -6,7 +6,15 @@ package edu.kit.informatik;
  */
 public class Board {
 
-    private static String[][] currentBoard = new String[8][8];
+    private static String[][] currentBoard;
+    private static MessageHandler message = new MessageHandler();
+
+    /**
+     *
+     */
+    public Board(){currentBoard = new String [8][8]; }
+
+
 
     /**
      * Throwin method that throws a token of the current player into the given column number of the board.
@@ -14,7 +22,7 @@ public class Board {
      * @param currentPlayerName String of the current Players name.
      * @param columnNumber Integer of the column Number where the token is going to be thrown in.
      */
-    public static void throwinBoard(String currentPlayerName, int columnNumber) {
+    public void throwinBoard(String currentPlayerName, int columnNumber) {
         for (int i = 0; i < 8; i++) {
             if (currentBoard[columnNumber][i] != null && i != 0) {
                 currentBoard[columnNumber][i - 1] = currentPlayerName;
@@ -33,7 +41,7 @@ public class Board {
      * @param lineY Is the given line of the asked state on the board.
      * @return String of which Players token is in the place on the board or if it's empty.
      */
-    public static String getState(int columnX, int lineY) {
+    public String getState(int columnX, int lineY) {
         if (currentBoard[columnX][lineY] == null) {
             return "**";
         } else {
@@ -44,12 +52,12 @@ public class Board {
     /**
      * Print method of the whole board using the state method.
      */
-    public static void printBoard() {
+    public void printBoard() {
         for (int i = 0; i < 8; i++) {
             String line = "";
             for (int j = 0; j < 8; j++) {
                 line += getState(j, i) + " ";
-            } MessageHandler.printLine(line);
+            } message.printLine(line);
         }
     }
 
@@ -58,7 +66,7 @@ public class Board {
      *
      * @param columnX Given column Number where to remove the last Token.
      */
-    public static void removeLastElem(int columnX) {
+    public void removeLastElem(int columnX) {
         currentBoard[columnX][7] = null;
         for (int i = 7; i >= 1; i--) {
             currentBoard[columnX][i] = currentBoard[columnX][i - 1];
@@ -68,7 +76,7 @@ public class Board {
     /**
      * Flip method of the Board to flip all Places of tokens upside down.
      */
-    public static void flip() {
+    public void flip() {
         String[][] unflippedBoard = currentBoard;
         currentBoard = new String[][]{
                 {null, null, null, null, null, null, null, null},
@@ -89,6 +97,11 @@ public class Board {
             }
         }
     }
+
+    public void evaluateBoard() {
+        Evaluation currentBoardEvaluation = new Evaluation(currentBoard);
+    }
+
 
     /**
      * Getter method of the current Board.

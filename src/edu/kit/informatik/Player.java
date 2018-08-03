@@ -6,12 +6,14 @@ package edu.kit.informatik;
  */
 public class Player {
 
-    private static String player = "P1";
+    private static String player;
+
+    public Player() { player = "P1"; }
 
     /**
      * Method to change the current player.
      */
-    public static void changePlayer() {
+    public void changePlayer() {
         if (player.equals("P1")) {
             player = "P2";
         } else if (player.equals("P2")) {
@@ -24,8 +26,17 @@ public class Player {
      *
      * @return String as the name of the current player.
      */
-    public static String getPlayerName() {
+    public String getPlayerName() {
         return player;
+    }
+
+    /**
+     *
+     */
+    public void tokenThrowin() {
+        if (Command.getPlaysCounter() != 1 && player.equals("P1")) {
+            GameMain.tokenThrowin();
+        }
     }
 
 }
